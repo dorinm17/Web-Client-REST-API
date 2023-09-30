@@ -1,0 +1,39 @@
+Manea Dorin-Mihai, 323CA
+Homework #4 - Web client. Communication with a REST API.
+May, 2023
+
+	The project is implemented in C. It makes use of the skeleton code provided
+in Lab 9 for buffer.c, helpers.c, requests.c and their respective header files.
+The main functionality is implemented in client.c. For JSON parsing, I used the
+recommended C library parson.c, for its simplicity and ease of use.
+
+	After running the executable client, the user is prompted to enter one of
+the following commands:
+	- register <username> <password> - registers a new user with the server
+	- login <username> <password> - logs in the user with the server
+	- enter_library - grants acces to the library for the user
+	- get_books - returns all the books in the library
+	- get_book <book_id> - returns the book with the specified id
+	- add_book <title> <author> <genre> <publisher> <page_count> - adds a new
+		book to the database
+	- delete_book <book_id> - deletes the book with the specified id from the
+		database
+	- logout - logs out the user from the server
+	- exit - terminates the program
+
+	The communication with the server is done using the HTTP protocol over TCP.
+The client sends the requests to the server and receives the responses in JSON
+format. The appropiate action is taken based on the HTTP response code.
+
+	Of course, safe guard mechanisms are applied for all the commands, so that
+the user cannot enter invalid commands or invalid arguments for the commands:
+spaces where they should not be, empty strings, fields that should be numbers
+but are not. I used the fgets() function to properly read the user input and
+check it for errors. Additionally, the user cannot register multiple times with
+the same username and they must be logged in to be able to enter the library or
+perform a logout. To remember the user's session, I store the cookie received
+from the server in a string. Being granted access to the library, the user is
+assigned a JWT token, which I also store in a string. Proof of the token is
+mandatory to perform any operation on the library database. When the client
+encounters any error, the program prints the appropiate error message and waits
+for them to enter another command.
